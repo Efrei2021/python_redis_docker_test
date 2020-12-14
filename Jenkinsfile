@@ -5,17 +5,15 @@ pipeline{
 			echo 'Building the docker images'
 			sh 'docker build -t myflaskapp .'
 		}
-		stage('Run'){
-			parallel{
-				stage('run redis'){
-					steps{
-						sh 'docker run -d -p 6379:6379 --name myredis redis'
-					}
+		parallel{
+			stage('run redis'){
+				steps{
+					sh 'docker run -d -p 6379:6379 --name myredis redis'
 				}
-				stage('run flask'){
-					steps{
-						sh 'docker run -d -p 5000:5000 --name myflaskapp_c myflaskapp'
-					}
+			}
+			stage('run flask'){
+				steps{
+					sh 'docker run -d -p 5000:5000 --name myflaskapp_c myflaskapp'
 				}
 			}
 		}
