@@ -2,18 +2,22 @@ pipeline{
 	agent any
 	stages{
 		stage('Build'){
-			echo 'Building the docker images'
-			sh 'docker build -t myflaskapp .'
-		}
-		parallel{
-			stage('run redis'){
-				steps{
-					sh 'docker run -d -p 6379:6379 --name myredis redis'
-				}
+			steps{
+				echo 'Building the docker images'
+				sh 'docker build -t myflaskapp .'
 			}
-			stage('run flask'){
-				steps{
-					sh 'docker run -d -p 5000:5000 --name myflaskapp_c myflaskapp'
+		}
+		stege('Run'){
+			parallel{
+				stage('run redis'){
+					steps{
+						sh 'docker run -d -p 6379:6379 --name myredis redis'
+					}
+				}
+				stage('run flask'){
+					steps{
+						sh 'docker run -d -p 5000:5000 --name myflaskapp_c myflaskapp'
+					}
 				}
 			}
 		}
