@@ -11,12 +11,12 @@ pipeline{
 			parallel{
 				stage('run redis'){
 					steps{
-						sh 'docker run -d -p 6379:6379 --name myredis redis'
+						sh 'docker run -d -p 6379:6379 redis'
 					}
 				}
 				stage('run flask'){
 					steps{
-						sh 'docker run -d -p 5000:5000 --name myflaskapp_c myflaskapp'
+						sh 'docker run -d -p 5000:5000 myflaskapp'
 					}
 				}
 			}
@@ -28,8 +28,7 @@ pipeline{
 		}
 		stage('stop container'){
 			steps{
-				sh 'docker rm -f myflaskapp_c'
-				sh 'docker rm -f redis'
+				sh 'docker container rm -f $(docker container ls -qa)'
 			}
 		}
 	}
