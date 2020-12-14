@@ -7,7 +7,7 @@ pipeline{
 				sh 'docker build -t myflaskapp .'
 			}
 		}
-		stege('Run'){
+		stage('Run'){
 			parallel{
 				stage('run redis'){
 					steps{
